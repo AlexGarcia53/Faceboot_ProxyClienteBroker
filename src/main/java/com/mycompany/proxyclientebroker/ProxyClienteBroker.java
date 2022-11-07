@@ -37,13 +37,13 @@ public class ProxyClienteBroker implements IProxy{
     
     public ProxyClienteBroker(String username){
         try{
-            this.socket=new Socket("192.168.100.5", 5000);
+            this.socket=new Socket("192.168.0.4", 5000);
             this.bufferedReader= new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter= new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.outputStream= new ObjectOutputStream(socket.getOutputStream());
             this.inputStream= new ObjectInputStream(socket.getInputStream());
-            this.proxy= new Proxy();
             this.username= username;
+            this.proxy= new Proxy();
             this.enviarMensaje(username);
             /**this.escucharPorMensaje();**/
         } catch (IOException e){
@@ -51,10 +51,10 @@ public class ProxyClienteBroker implements IProxy{
         }
     }
     
-    public String enviarSolicitud(Solicitud solicitud){
+    public String enviarSolicitud(String solicitud){
         String respuesta = "";
         try{
-            bufferedWriter.write(solicitud.toString());
+            bufferedWriter.write(solicitud);
             bufferedWriter.newLine();
             bufferedWriter.flush();
             
@@ -132,12 +132,17 @@ public class ProxyClienteBroker implements IProxy{
 //    }
 
     @Override
-    public Solicitud registrarUsuario(Usuario usuario) {
-        String solicitudSerializada= proxy.serializarSolicitudRegistroUsuario(usuario);
-        Solicitud solicitud= new Solicitud(Operacion.registrar_usuario, solicitudSerializada);
-        String[] arregloRespuesta= this.enviarSolicitud(solicitud).split(",");
-        Solicitud respuesta= new Solicitud(arregloRespuesta[0], arregloRespuesta[1]);
-        respuesta.setRespuesta(arregloRespuesta[2]);
-        return respuesta;
+    public String registrarUsuario(Usuario usuario) {
+        String usuarioSerializado= proxy.serializarUsuario(usuario);
+        Solicitud solicitud= new Solicitud(Operacion.registrar_usuario, usuarioSerializado);
+        String solicitudSerializada= proxy.serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= proxy.deserealizarUusuario(solicitudRespuesta.getRespuesta());
+        if(respuesta==null){
+            return solicitudRespuesta.getRespuesta();
+        }else{
+            return respuesta.toString();
+        }
     }
 }

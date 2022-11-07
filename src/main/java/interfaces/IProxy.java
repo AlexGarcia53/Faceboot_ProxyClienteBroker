@@ -12,5 +12,5 @@ import dominio.Usuario;
  * @author Admin
  */
 public interface IProxy {
-    public Solicitud registrarUsuario(Usuario usuario);
+    public String registrarUsuario(Usuario usuario);
 }
