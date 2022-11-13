@@ -145,4 +145,20 @@ public class ProxyClienteBroker implements IProxy{
             return respuesta.toString();
         }
     }
+
+    @Override
+    public String iniciarSesion(Usuario usuario) {
+        String usuarioSerializado= proxy.serializarUsuario(usuario);
+        Solicitud solicitud= new Solicitud(Operacion.iniciar_sesion, usuarioSerializado);
+        String solicitudSerializada= proxy.serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= proxy.deserealizarUusuario(solicitudRespuesta.getRespuesta());
+        if(respuesta==null){
+            return solicitudRespuesta.getRespuesta();
+        }
+        else{
+            return respuesta.toString();
+        }
+    }
 }
