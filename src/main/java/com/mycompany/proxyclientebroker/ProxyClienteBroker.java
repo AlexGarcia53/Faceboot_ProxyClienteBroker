@@ -6,6 +6,7 @@
 package com.mycompany.proxyclientebroker;
 
 import dominio.Operacion;
+import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
 import interfaces.IProxy;
@@ -37,7 +38,7 @@ public class ProxyClienteBroker implements IProxy{
     
     public ProxyClienteBroker(String username){
         try{
-            this.socket=new Socket("192.168.0.4", 5000);
+            this.socket=new Socket("192.168.100.5", 5000);
             this.bufferedReader= new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter= new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.outputStream= new ObjectOutputStream(socket.getOutputStream());
@@ -138,7 +139,7 @@ public class ProxyClienteBroker implements IProxy{
         String solicitudSerializada= proxy.serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
         Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
-        Usuario respuesta= proxy.deserealizarUusuario(solicitudRespuesta.getRespuesta());
+        Usuario respuesta= proxy.deserealizarUsuario(solicitudRespuesta.getRespuesta());
         if(respuesta==null){
             return solicitudRespuesta.getRespuesta();
         }else{
@@ -153,7 +154,23 @@ public class ProxyClienteBroker implements IProxy{
         String solicitudSerializada= proxy.serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
         Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
-        Usuario respuesta= proxy.deserealizarUusuario(solicitudRespuesta.getRespuesta());
+        Usuario respuesta= proxy.deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        if(respuesta==null){
+            return solicitudRespuesta.getRespuesta();
+        }
+        else{
+            return respuesta.toString();
+        }
+    }
+
+    @Override
+    public String registrarPublicacion(Publicacion publicacion) {
+        String publicacionSerealizada = proxy.serializarSolicitudRegistroPublicacion(publicacion);
+        Solicitud solicitud = new Solicitud (Operacion.registrar_publicacion, publicacionSerealizada);
+        String solicitudSerializada= proxy.serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
+        Publicacion respuesta= proxy.deserealizarPublicacion(solicitudRespuesta.getRespuesta());
         if(respuesta==null){
             return solicitudRespuesta.getRespuesta();
         }

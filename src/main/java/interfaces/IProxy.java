@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
 
@@ -14,4 +15,5 @@ import dominio.Usuario;
 public interface IProxy {
     public String registrarUsuario(Usuario usuario);
     public String iniciarSesion(Usuario usuario);
+    public String registrarPublicacion(Publicacion publicacion);
 }

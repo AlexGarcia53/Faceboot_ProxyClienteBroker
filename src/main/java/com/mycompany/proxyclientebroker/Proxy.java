@@ -64,7 +64,7 @@ public class Proxy {
         return null;
     }
     
-    public Usuario deserealizarUusuario(String usuario){
+    public Usuario deserealizarUsuario(String usuario){
         try{
             ObjectMapper conversion= new ObjectMapper();
             return conversion.readValue(usuario, Usuario.class);
@@ -81,6 +81,16 @@ public class Proxy {
             return solicitudSerializada;
         }catch(Exception e){
             e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Publicacion deserealizarPublicacion(String publicacion){
+        try{
+            ObjectMapper conversion= new ObjectMapper();
+            return conversion.readValue(publicacion, Publicacion.class);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
         }
         return null;
     }
