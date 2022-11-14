@@ -10,12 +10,11 @@ import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
 import interfaces.IProxy;
+import interfaces.ISuscriptorFrmMuro;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -27,22 +26,18 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class ProxyClienteBroker implements IProxy{
-
+    private ISuscriptorFrmMuro suscriptor;
     private Proxy proxy;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
     private String username;
     
     public ProxyClienteBroker(String username){
         try{
-            this.socket=new Socket("192.168.100.5", 5000);
+            this.socket=new Socket("192.168.0.4", 5000);
             this.bufferedReader= new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter= new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.outputStream= new ObjectOutputStream(socket.getOutputStream());
-            this.inputStream= new ObjectInputStream(socket.getInputStream());
             this.username= username;
             this.proxy= new Proxy();
             this.enviarMensaje(username);
@@ -86,25 +81,23 @@ public class ProxyClienteBroker implements IProxy{
         }
     }
     
-    /** public void escucharPorMensaje(){
+    public void escucharPorMensaje(){
         new Thread(new Runnable(){
             @Override
             public void run(){
-                Solicitud respuestaBroker;
+                String mensajeBroker;
                 
-                while(socket.isConnected()){
+                while(socket.isConnected() && suscriptor!=null){
                     try{
-                        respuestaBroker= (Solicitud)inputStream.readObject();
-                        System.out.println(respuestaBroker);
+                        mensajeBroker= bufferedReader.readLine();
+                        notificar(mensajeBroker);
                     } catch (IOException e){
                         closeEverything(socket, bufferedReader, bufferedWriter);
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(ProxyClienteBroker.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
         }).start();
-    } **/
+    }
     
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){
         try{
@@ -170,12 +163,35 @@ public class ProxyClienteBroker implements IProxy{
         String solicitudSerializada= proxy.serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
         Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
-        Publicacion respuesta= proxy.deserealizarPublicacion(solicitudRespuesta.getRespuesta());
-        if(respuesta==null){
-            return solicitudRespuesta.getRespuesta();
+        return solicitudRespuesta.getRespuesta();
+
+    }
+
+    @Override
+    public void suscribirse(ISuscriptorFrmMuro suscriptor) {
+        Solicitud suscripcion= new Solicitud(Operacion.suscribir_observador_muro);
+        String suscripcionSerializada= proxy.serializarSolicitud(suscripcion);
+        String respuestaServidor= this.enviarSolicitud(suscripcionSerializada);
+        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
+        if(solicitudRespuesta.getRespuesta().equalsIgnoreCase("Éxito")){
+            System.out.println("XD");
+            this.suscriptor= suscriptor;
+            this.escucharPorMensaje();
         }
-        else{
-            return respuesta.toString();
+    }
+    
+    public void notificar(String actualizacion){
+        this.suscriptor.notificarPublicacion(actualizacion);
+    }
+
+    @Override
+    public void desuscribirse() {
+        Solicitud suscripcion= new Solicitud(Operacion.desuscribir_observador_muro);
+        String suscripcionSerializada= proxy.serializarSolicitud(suscripcion);
+        String respuestaServidor= this.enviarSolicitud(suscripcionSerializada);
+        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
+        if(solicitudRespuesta.getRespuesta().equalsIgnoreCase("Éxito")){
+            this.suscriptor= null;
         }
     }
 }
