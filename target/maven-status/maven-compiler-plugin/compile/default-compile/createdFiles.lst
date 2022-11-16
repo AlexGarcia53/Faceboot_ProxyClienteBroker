@@ -1,5 +1,6 @@
 com\mycompany\proxyclientebroker\Proxy.class
 com\mycompany\proxyclientebroker\ProxyClienteBroker$1.class
 interfaces\IProxy.class
+com\mycompany\proxyclientebroker\ProxyClienteBroker$2.class
 com\mycompany\proxyclientebroker\ProxyClienteBroker.class
-interfaces\ISuscriptorFrmMuro.class
+interfaces\ISuscriptorEventoRegistrarPublicacion.class

@@ -10,6 +10,6 @@ import dominio.Publicacion;
  *
  * @author Admin
  */
-public interface ISuscriptorFrmMuro {
+public interface ISuscriptorEventoRegistrarPublicacion {
     public void notificarPublicacion(String actualizacion);
 }

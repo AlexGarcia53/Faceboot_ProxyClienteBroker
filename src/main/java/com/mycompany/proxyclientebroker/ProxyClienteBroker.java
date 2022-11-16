@@ -10,7 +10,7 @@ import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
 import interfaces.IProxy;
-import interfaces.ISuscriptorFrmMuro;
+import interfaces.ISuscriptorEventoRegistrarPublicacion;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,26 +26,35 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class ProxyClienteBroker implements IProxy{
-    private ISuscriptorFrmMuro suscriptor;
+    private ISuscriptorEventoRegistrarPublicacion suscriptorEventoRegistrarPublicacion;
+    private String HOST= "192.168.0.4";
+    private int PORT= 5000;
+//    private static ProxyClienteBroker proxyClienteBroker;
     private Proxy proxy;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String username;
     
-    public ProxyClienteBroker(String username){
+    public ProxyClienteBroker(){
         try{
-            this.socket=new Socket("192.168.0.4", 5000);
+            this.socket=new Socket(HOST, PORT);
             this.bufferedReader= new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter= new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.username= username;
             this.proxy= new Proxy();
-            this.enviarMensaje(username);
-            /**this.escucharPorMensaje();**/
+//            this.enviarMensaje(username);
+            this.escucharPorMensaje();
         } catch (IOException e){
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
     }
+    
+//    public static ProxyClienteBroker obtenerProxyClienteBroker(){
+//        if(proxyClienteBroker==null){
+//            proxyClienteBroker= new ProxyClienteBroker();
+//        }
+//        return proxyClienteBroker;
+//    }
     
     public String enviarSolicitud(String solicitud){
         String respuesta = "";
@@ -55,6 +64,7 @@ public class ProxyClienteBroker implements IProxy{
             bufferedWriter.flush();
             
             respuesta= bufferedReader.readLine();
+            System.out.println(respuesta);
         } catch (IOException e){
             closeEverything(socket, bufferedReader, bufferedWriter);
         } finally{
@@ -87,10 +97,10 @@ public class ProxyClienteBroker implements IProxy{
             public void run(){
                 String mensajeBroker;
                 
-                while(socket.isConnected() && suscriptor!=null){
+                while(socket.isConnected()){
                     try{
                         mensajeBroker= bufferedReader.readLine();
-                        notificar(mensajeBroker);
+                        canalizarNotificacion(mensajeBroker);
                     } catch (IOException e){
                         closeEverything(socket, bufferedReader, bufferedWriter);
                     }
@@ -124,6 +134,21 @@ public class ProxyClienteBroker implements IProxy{
 //        client.listenForMessage();
 //        client.sendMessage();
 //    }
+    
+    public void canalizarNotificacion(String notificacion){
+        Solicitud notificacionServidor= proxy.deserializarSolicitud(notificacion);
+        Operacion tipoNotificacion= notificacionServidor.getOperacion();
+        switch(tipoNotificacion){
+            case registrar_usuario:
+                this.notificarEventoRegistrarUsuario(notificacion); break;
+            case iniciar_sesion:
+                this.notificarEventoIniciarSesion(notificacion); break;
+            case registrar_publicacion:
+                this.notificarEventoRegistrarPublicacion(notificacionServidor.getRespuesta()); break;
+            default:
+                return;
+        }
+    }
 
     @Override
     public String registrarUsuario(Usuario usuario) {
@@ -146,7 +171,14 @@ public class ProxyClienteBroker implements IProxy{
         Solicitud solicitud= new Solicitud(Operacion.iniciar_sesion, usuarioSerializado);
         String solicitudSerializada= proxy.serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        System.out.println(respuestaServidor);
         Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
+//        if(solicitudRespuesta.getRespuesta().startsWith("Excepción: ")){
+//            return solicitudRespuesta.getRespuesta();
+//        }else{
+//            Usuario respuesta= proxy.deserealizarUsuario(solicitudRespuesta.getRespuesta());
+//            return respuesta.toString();
+//        }
         Usuario respuesta= proxy.deserealizarUsuario(solicitudRespuesta.getRespuesta());
         if(respuesta==null){
             return solicitudRespuesta.getRespuesta();
@@ -168,30 +200,40 @@ public class ProxyClienteBroker implements IProxy{
     }
 
     @Override
-    public void suscribirse(ISuscriptorFrmMuro suscriptor) {
-        Solicitud suscripcion= new Solicitud(Operacion.suscribir_observador_muro);
-        String suscripcionSerializada= proxy.serializarSolicitud(suscripcion);
-        String respuestaServidor= this.enviarSolicitud(suscripcionSerializada);
-        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
-        if(solicitudRespuesta.getRespuesta().equalsIgnoreCase("Éxito")){
-            System.out.println("XD");
-            this.suscriptor= suscriptor;
-            this.escucharPorMensaje();
-        }
+    public void suscribirseEventoRegistrarPublicacion(ISuscriptorEventoRegistrarPublicacion suscriptor) {
+//        Solicitud suscripcion= new Solicitud(Operacion.suscribir_observador_muro);
+//        String suscripcionSerializada= proxy.serializarSolicitud(suscripcion);
+//        String respuestaServidor= this.enviarSolicitud(suscripcionSerializada);
+//        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
+//        if(solicitudRespuesta.getRespuesta().equalsIgnoreCase("Éxito")){
+//            System.out.println("XD");
+//            this.suscriptor= suscriptor;
+//            this.escucharPorMensaje();
+//        }
+        this.suscriptorEventoRegistrarPublicacion= suscriptor;
     }
     
-    public void notificar(String actualizacion){
-        this.suscriptor.notificarPublicacion(actualizacion);
+    public void notificarEventoRegistrarPublicacion(String actualizacion){
+        this.suscriptorEventoRegistrarPublicacion.notificarPublicacion(actualizacion);
+    }
+    
+    public void notificarEventoRegistrarUsuario(String actualizacion){
+        
+    }
+    
+    public void notificarEventoIniciarSesion(String actualizacion){
+        
     }
 
     @Override
-    public void desuscribirse() {
-        Solicitud suscripcion= new Solicitud(Operacion.desuscribir_observador_muro);
-        String suscripcionSerializada= proxy.serializarSolicitud(suscripcion);
-        String respuestaServidor= this.enviarSolicitud(suscripcionSerializada);
-        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
-        if(solicitudRespuesta.getRespuesta().equalsIgnoreCase("Éxito")){
-            this.suscriptor= null;
-        }
+    public void desuscribirseEventoRegistrarPublicacion() {
+//        Solicitud suscripcion= new Solicitud(Operacion.desuscribir_observador_muro);
+//        String suscripcionSerializada= proxy.serializarSolicitud(suscripcion);
+//        String respuestaServidor= this.enviarSolicitud(suscripcionSerializada);
+//        Solicitud solicitudRespuesta= proxy.deserializarSolicitud(respuestaServidor);
+//        if(solicitudRespuesta.getRespuesta().equalsIgnoreCase("Éxito")){
+//            this.suscriptor= null;
+//        }
+        this.suscriptorEventoRegistrarPublicacion=null;
     }
 }
