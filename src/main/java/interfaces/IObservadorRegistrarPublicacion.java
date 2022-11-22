@@ -4,12 +4,10 @@
  */
 package interfaces;
 
-import dominio.Publicacion;
-
 /**
  *
  * @author Admin
  */
-public interface ISuscriptorEventoRegistrarPublicacion {
-    public void notificarPublicacion(String actualizacion);
+public interface IObservadorRegistrarPublicacion {
+    public void notificarRegistroPublicacion(String actualizacion);
 }

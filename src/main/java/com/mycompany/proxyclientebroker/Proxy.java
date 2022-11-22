@@ -16,9 +16,17 @@ import dominio.Usuario;
  * @author Admin
  */
 public class Proxy {
+    private static Proxy proxy;
     
-    public Proxy(){
+    private Proxy(){
         
+    }
+    
+    public static Proxy getInstancia(){
+        if(proxy==null){
+            proxy= new Proxy();
+        }
+        return proxy;
     }
     
 //    public String serializarObjetoOperacion(Operacion operacion){

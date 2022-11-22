@@ -16,6 +16,6 @@ public interface IProxy {
     public String registrarUsuario(Usuario usuario);
     public String iniciarSesion(Usuario usuario);
     public String registrarPublicacion(Publicacion publicacion);
-    public void suscribirseEventoRegistrarPublicacion(ISuscriptorEventoRegistrarPublicacion suscriptor);
-    public void desuscribirseEventoRegistrarPublicacion();
+    public void suscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
+    public void desuscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
 }
