@@ -15,6 +15,7 @@ import dominio.Usuario;
 public interface IProxy {
     public String registrarUsuario(Usuario usuario);
     public String iniciarSesion(Usuario usuario);
+    public String iniciarSesionFacebook(Usuario usuario);
     public String registrarPublicacion(Publicacion publicacion);
     public void suscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
     public void desuscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);

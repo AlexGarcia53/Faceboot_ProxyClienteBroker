@@ -28,7 +28,7 @@ import observadores.ObservadorRegistrarPublicacion;
  */
 public class ProxyClienteBroker implements IProxy{
 //    private SuscriptorRegistrarPublicacion suscriptorRegistrarPublicacion;
-    private String HOST= "192.168.0.4";
+    private String HOST= "192.168.100.5";
     private int PORT= 5000;
 //    private static ProxyClienteBroker proxyClienteBroker;
 //    private Proxy proxy;
@@ -182,7 +182,24 @@ public class ProxyClienteBroker implements IProxy{
             return respuesta.toString();
         }
     }
-
+    
+    @Override
+    public String iniciarSesionFacebook(Usuario usuario) {
+        String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
+        Solicitud solicitud= new Solicitud(Operacion.iniciar_sesion_facebook, usuarioSerializado);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        System.out.println(respuestaServidor);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        if(respuesta==null){
+            return solicitudRespuesta.getRespuesta();
+        }
+        else{
+            return respuesta.toString();
+        }
+    }
+  
     @Override
     public String registrarPublicacion(Publicacion publicacion) {
         String publicacionSerealizada = Proxy.getInstancia().serializarSolicitudRegistroPublicacion(publicacion);
@@ -203,4 +220,6 @@ public class ProxyClienteBroker implements IProxy{
     public void desuscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor) {
         ObservadorRegistrarPublicacion.getInstancia().desuscribirse(suscriptor);
     }
+
+
 }

@@ -1,3 +1,7 @@
+interfaces\IObservadorRegistrarPublicacion.class
+oyentes\OyenteRegistrarPublicacion$1.class
+oyentes\OyenteRegistrarPublicacion.class
 com\mycompany\proxyclientebroker\Proxy.class
 interfaces\IProxy.class
 com\mycompany\proxyclientebroker\ProxyClienteBroker.class
+observadores\ObservadorRegistrarPublicacion.class
