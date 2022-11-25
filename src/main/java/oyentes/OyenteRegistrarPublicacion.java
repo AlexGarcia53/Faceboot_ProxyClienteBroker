@@ -20,8 +20,8 @@ import java.net.Socket;
  * @author Admin
  */
 public class OyenteRegistrarPublicacion {
-    private String HOST= "192.168.100.5";
-    private int PORT= 5005;
+    private String HOST= "192.168.0.4";
+    private int PORT= 5000;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;

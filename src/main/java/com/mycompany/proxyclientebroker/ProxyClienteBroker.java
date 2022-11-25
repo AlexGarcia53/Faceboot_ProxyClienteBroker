@@ -28,7 +28,7 @@ import observadores.ObservadorRegistrarPublicacion;
  */
 public class ProxyClienteBroker implements IProxy{
 //    private SuscriptorRegistrarPublicacion suscriptorRegistrarPublicacion;
-    private String HOST= "192.168.100.5";
+    private String HOST= "192.168.0.4";
     private int PORT= 5000;
 //    private static ProxyClienteBroker proxyClienteBroker;
 //    private Proxy proxy;
