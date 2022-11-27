@@ -5,6 +5,7 @@
 
 package com.mycompany.proxyclientebroker;
 
+import dominio.Mensaje;
 import dominio.Operacion;
 import dominio.Publicacion;
 import dominio.Solicitud;
@@ -28,7 +29,8 @@ import observadores.ObservadorRegistrarPublicacion;
  */
 public class ProxyClienteBroker implements IProxy{
 //    private SuscriptorRegistrarPublicacion suscriptorRegistrarPublicacion;
-    private String HOST= "192.168.0.4";
+  //  private String HOST= "192.168.0.4";
+    private String HOST= "192.168.0.9";
     private int PORT= 5000;
 //    private static ProxyClienteBroker proxyClienteBroker;
 //    private Proxy proxy;
@@ -209,6 +211,24 @@ public class ProxyClienteBroker implements IProxy{
         Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
         return solicitudRespuesta.getRespuesta();
 
+    }
+    
+    @Override
+    public String Notificar(Mensaje mensaje) {
+        String mensajeSerializado= Proxy.getInstancia().serializarSolicitudMensaje(mensaje);
+        Solicitud solicitud=new Solicitud(Operacion.enviar_notificación,mensajeSerializado);
+        String solicitudSerializada=Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor=this.enviarSolicitud(solicitudSerializada);
+       Solicitud solicitudRespuesta=Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+       //Me aparece null
+        Mensaje respuesta=Proxy.getInstancia().deserealizarSolicitudMensaje(solicitudRespuesta.getRespuesta());
+        if(respuesta==null){
+            return solicitudRespuesta.getRespuesta();
+        }else{
+            return respuesta.toString();
+        }
+
+    
     }
 
     @Override

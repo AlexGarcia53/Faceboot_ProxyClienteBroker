@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import dominio.Mensaje;
 import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
@@ -17,6 +18,7 @@ public interface IProxy {
     public String iniciarSesion(Usuario usuario);
     public String iniciarSesionFacebook(Usuario usuario);
     public String registrarPublicacion(Publicacion publicacion);
+    public String Notificar(Mensaje mensaje);
     public void suscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
     public void desuscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
 }
