@@ -4,12 +4,14 @@
  */
 package com.mycompany.proxyclientebroker;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dominio.Comentario;
 import dominio.Operacion;
 import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
+import java.util.List;
 
 /**
  *
@@ -109,6 +111,16 @@ public class Proxy {
             String solicitudSerializada= mapper.writeValueAsString(comentario);
             return solicitudSerializada;
         } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public List<Publicacion> deserealizarLista(String lista){
+        try{
+            ObjectMapper conversion= new ObjectMapper();
+            return conversion.readValue(lista, new TypeReference<List<Publicacion>>(){});
+        } catch(Exception e){
             e.printStackTrace();
         }
         return null;

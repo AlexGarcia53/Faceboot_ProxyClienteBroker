@@ -7,16 +7,18 @@ package interfaces;
 import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
+import java.util.List;
 
 /**
  *
  * @author Admin
  */
 public interface IProxy {
-    public String registrarUsuario(Usuario usuario);
-    public String iniciarSesion(Usuario usuario);
-    public String iniciarSesionFacebook(Usuario usuario);
-    public String registrarPublicacion(Publicacion publicacion);
+    public Usuario registrarUsuario(Usuario usuario);
+    public Usuario iniciarSesion(Usuario usuario);
+    public Usuario iniciarSesionFacebook(Usuario usuario);
+    public Publicacion registrarPublicacion(Publicacion publicacion);
+    public List<Publicacion> consultarPublicaciones();
     public void suscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
     public void desuscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
 }

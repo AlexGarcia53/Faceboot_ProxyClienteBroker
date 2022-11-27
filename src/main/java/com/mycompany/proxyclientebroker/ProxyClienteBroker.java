@@ -9,6 +9,10 @@ import dominio.Operacion;
 import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
+import excepciones.ErrorBusquedaPublicacionesException;
+import excepciones.ErrorBusquedaUsuarioException;
+import excepciones.ErrorGuardarPublicacionException;
+import excepciones.ErrorGuardarUsuarioException;
 import interfaces.IProxy;
 import interfaces.IObservadorRegistrarPublicacion;
 import java.io.BufferedReader;
@@ -17,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -146,45 +152,39 @@ public class ProxyClienteBroker implements IProxy{
 //    }
 
     @Override
-    public String registrarUsuario(Usuario usuario) {
+    public Usuario registrarUsuario(Usuario usuario) {
         String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
         Solicitud solicitud= new Solicitud(Operacion.registrar_usuario, usuarioSerializado);
         String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
         Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
         Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
-        if(respuesta==null){
-            return solicitudRespuesta.getRespuesta();
+        if(respuesta!=null){
+            return respuesta;
         }else{
-            return respuesta.toString();
+            throw new ErrorGuardarUsuarioException(solicitudRespuesta.getRespuesta());
         }
     }
 
     @Override
-    public String iniciarSesion(Usuario usuario) {
+    public Usuario iniciarSesion(Usuario usuario) {
         String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
         Solicitud solicitud= new Solicitud(Operacion.iniciar_sesion, usuarioSerializado);
         String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
         System.out.println(respuestaServidor);
         Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-//        if(solicitudRespuesta.getRespuesta().startsWith("Excepción: ")){
-//            return solicitudRespuesta.getRespuesta();
-//        }else{
-//            Usuario respuesta= proxy.deserealizarUsuario(solicitudRespuesta.getRespuesta());
-//            return respuesta.toString();
-//        }
         Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
-        if(respuesta==null){
-            return solicitudRespuesta.getRespuesta();
+        if(respuesta!=null){
+            return respuesta;
         }
         else{
-            return respuesta.toString();
+            throw new ErrorBusquedaUsuarioException(solicitudRespuesta.getRespuesta());
         }
     }
     
     @Override
-    public String iniciarSesionFacebook(Usuario usuario) {
+    public Usuario iniciarSesionFacebook(Usuario usuario) {
         String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
         Solicitud solicitud= new Solicitud(Operacion.iniciar_sesion_facebook, usuarioSerializado);
         String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
@@ -192,22 +192,27 @@ public class ProxyClienteBroker implements IProxy{
         System.out.println(respuestaServidor);
         Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
         Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
-        if(respuesta==null){
-            return solicitudRespuesta.getRespuesta();
+        if(respuesta!=null){
+            return respuesta;
         }
         else{
-            return respuesta.toString();
+            throw new ErrorBusquedaUsuarioException(solicitudRespuesta.getRespuesta());
         }
     }
   
     @Override
-    public String registrarPublicacion(Publicacion publicacion) {
+    public Publicacion registrarPublicacion(Publicacion publicacion) {
         String publicacionSerealizada = Proxy.getInstancia().serializarSolicitudRegistroPublicacion(publicacion);
         Solicitud solicitud = new Solicitud (Operacion.registrar_publicacion, publicacionSerealizada);
         String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
         Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        return solicitudRespuesta.getRespuesta();
+        Publicacion respuesta= Proxy.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorGuardarPublicacionException(solicitudRespuesta.getRespuesta());
+        }
 
     }
 
@@ -219,6 +224,20 @@ public class ProxyClienteBroker implements IProxy{
     @Override
     public void desuscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor) {
         ObservadorRegistrarPublicacion.getInstancia().desuscribirse(suscriptor);
+    }
+
+    @Override
+    public List<Publicacion> consultarPublicaciones() {
+        Solicitud solicitud= new Solicitud(Operacion.consultar_publicaciones);
+        String solicitudSerealizada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerealizada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        List<Publicacion> publicaciones= Proxy.getInstancia().deserealizarLista(solicitudRespuesta.getRespuesta());
+        if(publicaciones!=null){
+            return publicaciones;
+        } else{
+            throw new ErrorBusquedaPublicacionesException(solicitudRespuesta.getRespuesta());
+        }
     }
 
 
