@@ -5,14 +5,22 @@
 
 package com.mycompany.proxyclientebroker;
 
+import dominio.Comentario;
 import dominio.Operacion;
 import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
 import excepciones.ErrorBusquedaPublicacionesException;
 import excepciones.ErrorBusquedaUsuarioException;
+import excepciones.ErrorEditarComentarioException;
+import excepciones.ErrorEliminarPublicacionException;
+import excepciones.ErrorGuardarComentarioException;
 import excepciones.ErrorGuardarPublicacionException;
 import excepciones.ErrorGuardarUsuarioException;
+import interfaces.IObservadorEditarComentario;
+import interfaces.IObservadorEditarPublicacion;
+import interfaces.IObservadorEliminarPublicacion;
+import interfaces.IObservadorRegistrarComentario;
 import interfaces.IProxy;
 import interfaces.IObservadorRegistrarPublicacion;
 import java.io.BufferedReader;
@@ -26,6 +34,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import observadores.ObservadorEditarComentario;
+import observadores.ObservadorEditarPublicacion;
+import observadores.ObservadorEliminarPublicacion;
+import observadores.ObservadorRegistrarComentario;
 import observadores.ObservadorRegistrarPublicacion;
 
 /**
@@ -238,6 +250,106 @@ public class ProxyClienteBroker implements IProxy{
         } else{
             throw new ErrorBusquedaPublicacionesException(solicitudRespuesta.getRespuesta());
         }
+    }
+
+    @Override
+    public void suscribirseEventoEditarPublicacion(IObservadorEditarPublicacion suscriptor) {
+        ObservadorEditarPublicacion.getInstancia().suscribirse(suscriptor);
+    }
+
+    @Override
+    public void desuscribirseEventoEditarPublicacion(IObservadorEditarPublicacion suscriptor) {
+        ObservadorEditarPublicacion.getInstancia().desuscribirse(suscriptor);
+    }
+
+    @Override
+    public Publicacion editarPublicacion(Publicacion publicacion) {
+        String publicacionSerealizada = Proxy.getInstancia().serializarSolicitudRegistroPublicacion(publicacion);
+        Solicitud solicitud = new Solicitud (Operacion.editar_publicacion, publicacionSerealizada);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Publicacion respuesta= Proxy.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorGuardarPublicacionException(solicitudRespuesta.getRespuesta());
+        }
+    }
+
+    @Override
+    public Publicacion eliminarPublicacion(Publicacion publicacion) {
+        String publicacionSerealizada = Proxy.getInstancia().serializarSolicitudRegistroPublicacion(publicacion);
+        Solicitud solicitud = new Solicitud (Operacion.eliminar_publicacion, publicacionSerealizada);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Publicacion respuesta= Proxy.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorEliminarPublicacionException(solicitudRespuesta.getRespuesta());
+        }
+    }
+
+    @Override
+    public void suscribirseEventoEliminarPublicacion(IObservadorEliminarPublicacion suscriptor) {
+        ObservadorEliminarPublicacion.getInstancia().suscribirse(suscriptor);
+    }
+
+    @Override
+    public void desuscribirseEventoEliminarPublicacion(IObservadorEliminarPublicacion suscriptor) {
+        ObservadorEliminarPublicacion.getInstancia().desuscribirse(suscriptor);
+    }
+
+    @Override
+    public Comentario registrarComentario(Comentario comentario) {
+        String comentarioSerealizado = Proxy.getInstancia().serializarComentario(comentario);
+        Solicitud solicitud = new Solicitud (Operacion.registrar_comentario, comentarioSerealizado);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Comentario respuesta= Proxy.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorGuardarComentarioException(solicitudRespuesta.getRespuesta());
+        }
+    }
+
+    @Override
+    public Comentario editarComentario(Comentario comentario) {
+        String comentarioSerealizado = Proxy.getInstancia().serializarComentario(comentario);
+        Solicitud solicitud = new Solicitud (Operacion.editar_comentario, comentarioSerealizado);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Comentario respuesta= Proxy.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorEditarComentarioException(solicitudRespuesta.getRespuesta());
+        }
+    }
+
+    @Override
+    public void suscribirseEventoRegistrarComentario(IObservadorRegistrarComentario suscriptor) {
+        ObservadorRegistrarComentario.getInstancia().suscribirse(suscriptor);
+    }
+
+    @Override
+    public void desuscribirseEventoRegistrarComentario(IObservadorRegistrarComentario suscriptor) {
+        ObservadorRegistrarComentario.getInstancia().desuscribirse(suscriptor);
+    }
+
+    @Override
+    public void suscribirseEventoEditarComentario(IObservadorEditarComentario suscriptor) {
+        ObservadorEditarComentario.getInstancia().suscribirse(suscriptor);
+    }
+
+    @Override
+    public void desuscribirseEventoEditarComentario(IObservadorEditarComentario suscriptor) {
+        ObservadorEditarComentario.getInstancia().desuscribirse(suscriptor);
     }
 
 

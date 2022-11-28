@@ -4,12 +4,12 @@
  */
 package interfaces;
 
-import dominio.Publicacion;
+import dominio.Comentario;
 
 /**
  *
  * @author Admin
  */
-public interface IObservadorRegistrarPublicacion {
-    public void notificarRegistroPublicacion(Publicacion actualizacion);
+public interface IObservadorEditarComentario {
+    public void notificarEdicionComentario(Comentario comentario);
 }

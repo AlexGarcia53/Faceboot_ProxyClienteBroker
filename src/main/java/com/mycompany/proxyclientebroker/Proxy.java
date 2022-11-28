@@ -125,4 +125,25 @@ public class Proxy {
         }
         return null;
     }
+    
+    public String serializarComentario(Comentario comentario){
+        try{
+            ObjectMapper mapper=new ObjectMapper();
+            String comentarioSerializado= mapper.writeValueAsString(comentario);
+            return comentarioSerializado;
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Comentario deserealizarComentario(String comentario){
+        try{
+            ObjectMapper conversion= new ObjectMapper();
+            return conversion.readValue(comentario, Comentario.class);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

@@ -10,6 +10,6 @@ import dominio.Publicacion;
  *
  * @author Admin
  */
-public interface IObservadorRegistrarPublicacion {
-    public void notificarRegistroPublicacion(Publicacion actualizacion);
+public interface IObservadorEditarPublicacion {
+    public void notificarEdicionPublicacion(Publicacion publicacion);
 }
