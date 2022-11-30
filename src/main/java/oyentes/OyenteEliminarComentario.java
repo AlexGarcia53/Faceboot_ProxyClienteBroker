@@ -7,7 +7,7 @@ package oyentes;
 import com.mycompany.proxyclientebroker.Proxy;
 import dominio.Operacion;
 import dominio.Solicitud;
-import interfaces.IObservadorRegistrarComentario;
+import interfaces.IObservadorEliminarComentario;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -19,15 +19,15 @@ import java.net.Socket;
  *
  * @author Admin
  */
-public class OyenteRegistrarComentario {
+public class OyenteEliminarComentario {
     private String HOST= "127.0.0.1";
     private int PORT= 5000;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private IObservadorRegistrarComentario observador;
+    private IObservadorEliminarComentario observador;
     
-    public OyenteRegistrarComentario(IObservadorRegistrarComentario observador){
+    public OyenteEliminarComentario(IObservadorEliminarComentario observador){
         try{
             this.socket= new Socket(HOST, PORT);
             this.bufferedReader= new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -41,13 +41,13 @@ public class OyenteRegistrarComentario {
     }
     
     private void registrarObservador(){
-        Solicitud solicitud= new Solicitud(Operacion.suscribir_observador_registrarComentario);
+        Solicitud solicitud= new Solicitud(Operacion.suscribir_observador_eliminarComentario);
         String mensaje= Proxy.getInstancia().serializarSolicitud(solicitud);
         this.enviarMensaje(mensaje);
     }
     
     public void eliminarObservador(){
-        Solicitud solicitud= new Solicitud(Operacion.desuscribir_observador_registrarComentario);
+        Solicitud solicitud= new Solicitud(Operacion.desuscribir_observador_eliminarComentario);
         String mensaje= Proxy.getInstancia().serializarSolicitud(solicitud);
         this.enviarMensaje(mensaje);
     }
@@ -90,7 +90,7 @@ public class OyenteRegistrarComentario {
                     try{
                         mensajeOyenteBroker= bufferedReader.readLine();
                         System.out.println(mensajeOyenteBroker);
-                        observador.notificarRegistroComentario(Proxy.getInstancia().deserealizarComentario(mensajeOyenteBroker));
+                        observador.notificarEliminacionComentario(Proxy.getInstancia().deserealizarComentario(mensajeOyenteBroker));
                     } catch (IOException e){
                         cerrarTodo(socket, bufferedReader, bufferedWriter);
                     }

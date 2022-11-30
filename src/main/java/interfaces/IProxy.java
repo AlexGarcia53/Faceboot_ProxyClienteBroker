@@ -18,11 +18,13 @@ public interface IProxy {
     public Usuario registrarUsuario(Usuario usuario);
     public Usuario iniciarSesion(Usuario usuario);
     public Usuario iniciarSesionFacebook(Usuario usuario);
+    public Usuario editarPerfilUsuario(Usuario usuario);
     public Publicacion registrarPublicacion(Publicacion publicacion);
     public Publicacion editarPublicacion(Publicacion publicacion);
     public Publicacion eliminarPublicacion(Publicacion publicacion);
     public Comentario registrarComentario(Comentario comentario);
     public Comentario editarComentario(Comentario comentario);
+    public Comentario eliminarComentario(Comentario comentario);
     public List<Publicacion> consultarPublicaciones();
     public void suscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
     public void desuscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
@@ -34,5 +36,7 @@ public interface IProxy {
     public void desuscribirseEventoRegistrarComentario(IObservadorRegistrarComentario suscriptor);
     public void suscribirseEventoEditarComentario(IObservadorEditarComentario suscriptor);
     public void desuscribirseEventoEditarComentario(IObservadorEditarComentario suscriptor);
+    public void suscribirseEventoEliminarComentario(IObservadorEliminarComentario suscriptor);
+    public void desuscribirseEventoEliminarComentario(IObservadorEliminarComentario suscriptor);
     
 }

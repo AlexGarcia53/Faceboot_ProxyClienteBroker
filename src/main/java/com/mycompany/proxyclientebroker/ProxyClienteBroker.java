@@ -13,12 +13,15 @@ import dominio.Usuario;
 import excepciones.ErrorBusquedaPublicacionesException;
 import excepciones.ErrorBusquedaUsuarioException;
 import excepciones.ErrorEditarComentarioException;
+import excepciones.ErrorEditarUsuarioException;
+import excepciones.ErrorEliminarComentarioException;
 import excepciones.ErrorEliminarPublicacionException;
 import excepciones.ErrorGuardarComentarioException;
 import excepciones.ErrorGuardarPublicacionException;
 import excepciones.ErrorGuardarUsuarioException;
 import interfaces.IObservadorEditarComentario;
 import interfaces.IObservadorEditarPublicacion;
+import interfaces.IObservadorEliminarComentario;
 import interfaces.IObservadorEliminarPublicacion;
 import interfaces.IObservadorRegistrarComentario;
 import interfaces.IProxy;
@@ -36,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import observadores.ObservadorEditarComentario;
 import observadores.ObservadorEditarPublicacion;
+import observadores.ObservadorEliminarComentario;
 import observadores.ObservadorEliminarPublicacion;
 import observadores.ObservadorRegistrarComentario;
 import observadores.ObservadorRegistrarPublicacion;
@@ -46,7 +50,7 @@ import observadores.ObservadorRegistrarPublicacion;
  */
 public class ProxyClienteBroker implements IProxy{
 //    private SuscriptorRegistrarPublicacion suscriptorRegistrarPublicacion;
-    private String HOST= "192.168.0.4";
+    private String HOST= "127.0.0.1";
     private int PORT= 5000;
 //    private static ProxyClienteBroker proxyClienteBroker;
 //    private Proxy proxy;
@@ -350,6 +354,46 @@ public class ProxyClienteBroker implements IProxy{
     @Override
     public void desuscribirseEventoEditarComentario(IObservadorEditarComentario suscriptor) {
         ObservadorEditarComentario.getInstancia().desuscribirse(suscriptor);
+    }
+
+    @Override
+    public void suscribirseEventoEliminarComentario(IObservadorEliminarComentario suscriptor) {
+        ObservadorEliminarComentario.getInstancia().suscribirse(suscriptor);
+    }
+
+    @Override
+    public void desuscribirseEventoEliminarComentario(IObservadorEliminarComentario suscriptor) {
+        ObservadorEliminarComentario.getInstancia().desuscribirse(suscriptor);
+    }
+
+    @Override
+    public Comentario eliminarComentario(Comentario comentario) {
+        String comentarioSerealizado = Proxy.getInstancia().serializarComentario(comentario);
+        Solicitud solicitud = new Solicitud (Operacion.eliminar_comentario, comentarioSerealizado);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Comentario respuesta= Proxy.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorEliminarComentarioException(solicitudRespuesta.getRespuesta());
+        }
+    }
+
+    @Override
+    public Usuario editarPerfilUsuario(Usuario usuario) {
+        String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
+        Solicitud solicitud= new Solicitud(Operacion.editar_perfil, usuarioSerializado);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorEditarUsuarioException(solicitudRespuesta.getRespuesta());
+        }
     }
 
 
