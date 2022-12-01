@@ -5,6 +5,7 @@
 package interfaces;
 
 import dominio.Comentario;
+import dominio.Mensaje;
 import dominio.Publicacion;
 import dominio.Solicitud;
 import dominio.Usuario;
@@ -19,12 +20,14 @@ public interface IProxy {
     public Usuario iniciarSesion(Usuario usuario);
     public Usuario iniciarSesionFacebook(Usuario usuario);
     public Usuario editarPerfilUsuario(Usuario usuario);
+    public Usuario consultarUsuarioNombre(Usuario usuario);
     public Publicacion registrarPublicacion(Publicacion publicacion);
     public Publicacion editarPublicacion(Publicacion publicacion);
     public Publicacion eliminarPublicacion(Publicacion publicacion);
     public Comentario registrarComentario(Comentario comentario);
     public Comentario editarComentario(Comentario comentario);
     public Comentario eliminarComentario(Comentario comentario);
+    public Mensaje enviarMensaje(Mensaje mensaje);
     public List<Publicacion> consultarPublicaciones();
     public void suscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);
     public void desuscribirseEventoRegistrarPublicacion(IObservadorRegistrarPublicacion suscriptor);

@@ -6,6 +6,7 @@
 package com.mycompany.proxyclientebroker;
 
 import dominio.Comentario;
+import dominio.Mensaje;
 import dominio.Operacion;
 import dominio.Publicacion;
 import dominio.Solicitud;
@@ -16,6 +17,7 @@ import excepciones.ErrorEditarComentarioException;
 import excepciones.ErrorEditarUsuarioException;
 import excepciones.ErrorEliminarComentarioException;
 import excepciones.ErrorEliminarPublicacionException;
+import excepciones.ErrorEnviarMensajeException;
 import excepciones.ErrorGuardarComentarioException;
 import excepciones.ErrorGuardarPublicacionException;
 import excepciones.ErrorGuardarUsuarioException;
@@ -393,6 +395,36 @@ public class ProxyClienteBroker implements IProxy{
             return respuesta;
         }else{
             throw new ErrorEditarUsuarioException(solicitudRespuesta.getRespuesta());
+        }
+    }
+
+    @Override
+    public Usuario consultarUsuarioNombre(Usuario usuario) {
+        String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
+        Solicitud solicitud= new Solicitud(Operacion.consultar_usuarioNombre, usuarioSerializado);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorBusquedaUsuarioException(solicitudRespuesta.getRespuesta());
+        }
+    }
+
+    @Override
+    public Mensaje enviarMensaje(Mensaje mensaje) {
+        String mensajeSerializado= Proxy.getInstancia().serializarMensaje(mensaje);
+        Solicitud solicitud= new Solicitud(Operacion.registrar_mensaje, mensajeSerializado);
+        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
+        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
+        Mensaje respuesta= Proxy.getInstancia().deserealizarMensaje(solicitudRespuesta.getRespuesta());
+        if(respuesta!=null){
+            return respuesta;
+        }else{
+            throw new ErrorEnviarMensajeException(solicitudRespuesta.getRespuesta());
         }
     }
 

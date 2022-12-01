@@ -7,6 +7,7 @@ package com.mycompany.proxyclientebroker;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dominio.Comentario;
+import dominio.Mensaje;
 import dominio.Operacion;
 import dominio.Publicacion;
 import dominio.Solicitud;
@@ -141,6 +142,27 @@ public class Proxy {
         try{
             ObjectMapper conversion= new ObjectMapper();
             return conversion.readValue(comentario, Comentario.class);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    
+    public String serializarMensaje(Mensaje mensaje){
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String solicitudSerializada = mapper.writeValueAsString(mensaje);
+            return solicitudSerializada;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Mensaje deserealizarMensaje(String mensaje){
+        try{
+            ObjectMapper conversion= new ObjectMapper();
+            return conversion.readValue(mensaje, Mensaje.class);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
