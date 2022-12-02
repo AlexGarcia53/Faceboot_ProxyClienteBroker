@@ -7,9 +7,13 @@ package interfaces;
 import dominio.Comentario;
 
 /**
- *
- * @author Admin
+ * Interfaz que contiene el método para notificar a un observador la eliminación de un comentario.
+ * @author Equipo Broker.
  */
 public interface IObservadorEliminarComentario {
+    /**
+     * Método utilizado para notificar la eliminación de un comentario.
+     * @param comentario Actualización de dicho evento.
+     */
     public void notificarEliminacionComentario(Comentario comentario);
 }

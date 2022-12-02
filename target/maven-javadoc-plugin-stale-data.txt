@@ -1,0 +1,88 @@
+@options
+@packages
+@argfile
+-classpath
+'C:/Users/Admin/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.13.1/jackson-databind-2.13.1.jar;C:/Users/Admin/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.13.1/jackson-annotations-2.13.1.jar;C:/Users/Admin/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.13.1/jackson-core-2.13.1.jar;C:/Users/Admin/.m2/repository/com/mycompany/Faceboot_Dominio/1.0-SNAPSHOT/Faceboot_Dominio-1.0-SNAPSHOT.jar;C:/Users/Admin/.m2/repository/org/hibernate/orm/hibernate-core/6.1.2.Final/hibernate-core-6.1.2.Final.jar;C:/Users/Admin/.m2/repository/jakarta/persistence/jakarta.persistence-api/3.0.0/jakarta.persistence-api-3.0.0.jar;C:/Users/Admin/.m2/repository/jakarta/transaction/jakarta.transaction-api/2.0.0/jakarta.transaction-api-2.0.0.jar;C:/Users/Admin/.m2/repository/org/jboss/logging/jboss-logging/3.4.3.Final/jboss-logging-3.4.3.Final.jar;C:/Users/Admin/.m2/repository/org/hibernate/common/hibernate-commons-annotations/6.0.2.Final/hibernate-commons-annotations-6.0.2.Final.jar;C:/Users/Admin/.m2/repository/net/bytebuddy/byte-buddy/1.12.9/byte-buddy-1.12.9.jar;C:/Users/Admin/.m2/repository/org/hibernate/hibernate-entitymanager/5.6.11.Final/hibernate-entitymanager-5.6.11.Final.jar;C:/Users/Admin/.m2/repository/javax/persistence/javax.persistence-api/2.2/javax.persistence-api-2.2.jar;C:/Users/Admin/.m2/repository/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.1.1.Final/jboss-transaction-api_1.2_spec-1.1.1.Final.jar;C:/Users/Admin/.m2/repository/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar;C:/Users/Admin/.m2/repository/com/google/protobuf/protobuf-java/3.19.4/protobuf-java-3.19.4.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'1.8'
+-sourcepath
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2022. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'ProxyClienteBroker 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' 'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'ProxyClienteBroker 1.0-SNAPSHOT API'
+com.mycompany.proxyclientebroker
+interfaces
+observadores
+oyentes
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/com/mycompany/proxyclientebroker/Deserealizador.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/com/mycompany/proxyclientebroker/ProxyClienteBroker.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/interfaces/IObservadorEditarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/interfaces/IObservadorEditarPublicacion.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/interfaces/IObservadorEliminarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/interfaces/IObservadorEliminarPublicacion.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/interfaces/IObservadorRegistrarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/interfaces/IObservadorRegistrarPublicacion.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/interfaces/IProxy.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/observadores/ObservadorEditarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/observadores/ObservadorEditarPublicacion.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/observadores/ObservadorEliminarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/observadores/ObservadorEliminarPublicacion.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/observadores/ObservadorRegistrarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/observadores/ObservadorRegistrarPublicacion.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/oyentes/OyenteEditarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/oyentes/OyenteEditarPublicacion.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/oyentes/OyenteEliminarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/oyentes/OyenteEliminarPublicacion.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/oyentes/OyenteRegistrarComentario.java'
+'C:/Users/Admin/Documents/GitHub/Faceboot_ProxyClienteBroker/src/main/java/oyentes/OyenteRegistrarPublicacion.java'
+C:\Users\Admin\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.13.1\jackson-databind-2.13.1.jar = 1667092062711
+C:\Users\Admin\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.13.1\jackson-annotations-2.13.1.jar = 1667092062542
+C:\Users\Admin\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.13.1\jackson-core-2.13.1.jar = 1667092062648
+C:\Users\Admin\.m2\repository\com\mycompany\Faceboot_Dominio\1.0-SNAPSHOT\Faceboot_Dominio-1.0-SNAPSHOT.jar = 1669951630513
+C:\Users\Admin\.m2\repository\org\hibernate\orm\hibernate-core\6.1.2.Final\hibernate-core-6.1.2.Final.jar = 1667779421849
+C:\Users\Admin\.m2\repository\jakarta\persistence\jakarta.persistence-api\3.0.0\jakarta.persistence-api-3.0.0.jar = 1667778444007
+C:\Users\Admin\.m2\repository\jakarta\transaction\jakarta.transaction-api\2.0.0\jakarta.transaction-api-2.0.0.jar = 1667779418466
+C:\Users\Admin\.m2\repository\org\jboss\logging\jboss-logging\3.4.3.Final\jboss-logging-3.4.3.Final.jar = 1667779418490
+C:\Users\Admin\.m2\repository\org\hibernate\common\hibernate-commons-annotations\6.0.2.Final\hibernate-commons-annotations-6.0.2.Final.jar = 1667779418497
+C:\Users\Admin\.m2\repository\net\bytebuddy\byte-buddy\1.12.9\byte-buddy-1.12.9.jar = 1667779419122
+C:\Users\Admin\.m2\repository\org\hibernate\hibernate-entitymanager\5.6.11.Final\hibernate-entitymanager-5.6.11.Final.jar = 1667779419079
+C:\Users\Admin\.m2\repository\javax\persistence\javax.persistence-api\2.2\javax.persistence-api-2.2.jar = 1667779419158
+C:\Users\Admin\.m2\repository\org\jboss\spec\javax\transaction\jboss-transaction-api_1.2_spec\1.1.1.Final\jboss-transaction-api_1.2_spec-1.1.1.Final.jar = 1667779419182
+C:\Users\Admin\.m2\repository\mysql\mysql-connector-java\8.0.30\mysql-connector-java-8.0.30.jar = 1668283162215
+C:\Users\Admin\.m2\repository\com\google\protobuf\protobuf-java\3.19.4\protobuf-java-3.19.4.jar = 1668283162319
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java = 1669080338356
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\allclasses-index.html = 1669967632948
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\allpackages-index.html = 1669967632950
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\copy.svg = 1669967632986
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\element-list = 1669967632794
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\help-doc.html = 1669967632981
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\index-all.html = 1669967632975
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\index.html = 1669967632930
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\jquery-ui.overrides.css = 1669967633009
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\member-search-index.js = 1669967632954
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\module-search-index.js = 1669967632951
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\overview-summary.html = 1669967632977
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\overview-tree.html = 1669967632927
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\package-search-index.js = 1669967632952
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\script.js = 1669967632985
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\search.js = 1669967632987
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\stylesheet.css = 1669967632984
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\tag-search-index.js = 1669967632955
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\target\site\apidocs\type-search-index.js = 1669967632953

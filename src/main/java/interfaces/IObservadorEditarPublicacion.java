@@ -7,9 +7,13 @@ package interfaces;
 import dominio.Publicacion;
 
 /**
- *
- * @author Admin
+ * Interfaz que contiene el método para notificar a un observador la edición de una publicación.
+ * @author Equipo Broker.
  */
 public interface IObservadorEditarPublicacion {
+    /**
+     * Método utilizado para notificar la edición de una publicación.
+     * @param publicacion Actualización de dicho evento. 
+     */
     public void notificarEdicionPublicacion(Publicacion publicacion);
 }

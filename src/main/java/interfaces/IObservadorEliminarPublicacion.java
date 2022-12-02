@@ -7,9 +7,13 @@ package interfaces;
 import dominio.Publicacion;
 
 /**
- *
- * @author Admin
+ * Interfaz que contiene el método para notificar a un observador la eliminación de una publicación.
+ * @author Equipo Broker.
  */
 public interface IObservadorEliminarPublicacion {
+    /**
+     * Método utilizado para notificar la eliminación de una publicación.
+     * @param publicacion Actualización de dicho evento.
+     */
     public void notificarEliminacionPublicacion(Publicacion publicacion);
 }

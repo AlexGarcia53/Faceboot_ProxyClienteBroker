@@ -1,11 +1,13 @@
 interfaces\IObservadorRegistrarComentario.class
 interfaces\IObservadorEliminarPublicacion.class
 observadores\ObservadorEditarComentario.class
+com\mycompany\proxyclientebroker\Deserealizador.class
 observadores\ObservadorEliminarComentario.class
 oyentes\OyenteEliminarPublicacion$1.class
 oyentes\OyenteRegistrarPublicacion$1.class
 oyentes\OyenteRegistrarPublicacion.class
 oyentes\OyenteRegistrarComentario$1.class
+com\mycompany\proxyclientebroker\Deserealizador$1.class
 oyentes\OyenteRegistrarComentario.class
 interfaces\IObservadorEditarPublicacion.class
 interfaces\IObservadorEditarComentario.class
@@ -17,10 +19,8 @@ oyentes\OyenteEliminarPublicacion.class
 oyentes\OyenteEditarPublicacion.class
 oyentes\OyenteEditarComentario.class
 oyentes\OyenteEliminarComentario$1.class
-com\mycompany\proxyclientebroker\Proxy$1.class
 oyentes\OyenteEliminarComentario.class
 oyentes\OyenteEditarComentario$1.class
-com\mycompany\proxyclientebroker\Proxy.class
 interfaces\IProxy.class
 observadores\ObservadorRegistrarComentario.class
 com\mycompany\proxyclientebroker\ProxyClienteBroker.class

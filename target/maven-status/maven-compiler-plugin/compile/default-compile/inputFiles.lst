@@ -7,7 +7,6 @@ C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\oyente
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\com\mycompany\proxyclientebroker\ProxyClienteBroker.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\observadores\ObservadorRegistrarComentario.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\oyentes\OyenteEliminarComentario.java
-C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\com\mycompany\proxyclientebroker\Proxy.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\observadores\ObservadorEditarComentario.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\interfaces\IObservadorRegistrarPublicacion.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\observadores\ObservadorRegistrarPublicacion.java
@@ -17,5 +16,6 @@ C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\oyente
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\oyentes\OyenteRegistrarComentario.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\interfaces\IProxy.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\observadores\ObservadorEditarPublicacion.java
+C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\com\mycompany\proxyclientebroker\Deserealizador.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\oyentes\OyenteEditarComentario.java
 C:\Users\Admin\Documents\GitHub\Faceboot_ProxyClienteBroker\src\main\java\observadores\ObservadorEliminarComentario.java

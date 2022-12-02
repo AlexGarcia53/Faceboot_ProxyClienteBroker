@@ -16,17 +16,38 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 /**
- *
- * @author Admin
+ * Clase que representa a un oyente que escucha a uno de los eventos específicos.
+ * @author Equipo Broker.
  */
 public class OyenteRegistrarPublicacion {
+    /**
+     * Atributo que contiene la ip a la que se conectará.
+     */
     private String HOST= "127.0.0.1";
+    /**
+     * Atributo que contiene el puerto al que se conectará.
+     */
     private int PORT= 5000;
+    /**
+     * Atributo que contiene el socket de la conexión.
+     */
     private Socket socket;
+    /**
+     * Atributo que contiene el buffered reader de la conexión.
+     */
     private BufferedReader bufferedReader;
+    /**
+     * Atriuto que contiene el buffered writer de la conexión.
+     */
     private BufferedWriter bufferedWriter;
+    /**
+     * Atributo que contiene al observador del evento.
+     */
     private IObservadorRegistrarPublicacion observador;
-    
+    /**
+     * Método constructor de la clase.
+     * @param observador Observador del evento.
+     */
     public OyenteRegistrarPublicacion(IObservadorRegistrarPublicacion observador){
         try{
             this.socket= new Socket(HOST, PORT);
@@ -39,19 +60,26 @@ public class OyenteRegistrarPublicacion {
             cerrarTodo(socket, bufferedReader, bufferedWriter);
         }
     }
-    
+    /**
+     * Método utilizado para registrar al observador al evento.
+     */
     private void registrarObservador(){
         Solicitud solicitud= new Solicitud(Operacion.suscribrir_observador_registrarPublicacion);
         String mensaje= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         this.enviarMensaje(mensaje);
     }
-    
+    /**
+     * Método utilizado para eliminar al observador del evento.
+     */
     public void eliminarObservador(){
         Solicitud solicitud= new Solicitud(Operacion.desuscribrir_observador_registrarPublicacion);
         String mensaje= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         this.enviarMensaje(mensaje);
     }
-    
+    /**
+     * Método utilizado para enviar un mensaje a través del socket.
+     * @param mensaje Mensaje a enviar.
+     */
     public void enviarMensaje(String mensaje){
         try{
             
@@ -63,7 +91,12 @@ public class OyenteRegistrarPublicacion {
             cerrarTodo(socket, bufferedReader, bufferedWriter);
         }
     }
-    
+    /**
+     * Método utilizado para cerrar la conexión.
+     * @param socket Socket de la conexión.
+     * @param bufferedReader Buffered reader de la conexión.
+     * @param bufferedWriter Buffered writer de la conexión.
+     */
     public void cerrarTodo(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){
         try{
             if(bufferedReader != null){
@@ -79,7 +112,9 @@ public class OyenteRegistrarPublicacion {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Método utilizado para escuchar por actualizaciones del evento y notificar al observador.
+     */
     public void escucharPorMensaje(){
         new Thread(new Runnable(){
             @Override
