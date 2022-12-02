@@ -5,6 +5,7 @@
 package interfaces;
 
 import dominio.Comentario;
+import dominio.Hashtag;
 import dominio.Mensaje;
 import dominio.Publicacion;
 import dominio.Solicitud;
@@ -24,6 +25,7 @@ public interface IProxy {
     public Publicacion registrarPublicacion(Publicacion publicacion);
     public Publicacion editarPublicacion(Publicacion publicacion);
     public Publicacion eliminarPublicacion(Publicacion publicacion);
+    public List<Publicacion> consultarPublicaciones(Hashtag hashtag);
     public Comentario registrarComentario(Comentario comentario);
     public Comentario editarComentario(Comentario comentario);
     public Comentario eliminarComentario(Comentario comentario);

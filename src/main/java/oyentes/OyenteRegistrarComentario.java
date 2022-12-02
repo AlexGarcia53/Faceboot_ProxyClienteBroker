@@ -4,7 +4,7 @@
  */
 package oyentes;
 
-import com.mycompany.proxyclientebroker.Proxy;
+import com.mycompany.proxyclientebroker.Deserealizador;
 import dominio.Operacion;
 import dominio.Solicitud;
 import interfaces.IObservadorRegistrarComentario;
@@ -42,13 +42,13 @@ public class OyenteRegistrarComentario {
     
     private void registrarObservador(){
         Solicitud solicitud= new Solicitud(Operacion.suscribir_observador_registrarComentario);
-        String mensaje= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String mensaje= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         this.enviarMensaje(mensaje);
     }
     
     public void eliminarObservador(){
         Solicitud solicitud= new Solicitud(Operacion.desuscribir_observador_registrarComentario);
-        String mensaje= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String mensaje= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         this.enviarMensaje(mensaje);
     }
     
@@ -90,7 +90,7 @@ public class OyenteRegistrarComentario {
                     try{
                         mensajeOyenteBroker= bufferedReader.readLine();
                         System.out.println(mensajeOyenteBroker);
-                        observador.notificarRegistroComentario(Proxy.getInstancia().deserealizarComentario(mensajeOyenteBroker));
+                        observador.notificarRegistroComentario(Deserealizador.getInstancia().deserealizarComentario(mensajeOyenteBroker));
                     } catch (IOException e){
                         cerrarTodo(socket, bufferedReader, bufferedWriter);
                     }

@@ -6,6 +6,7 @@
 package com.mycompany.proxyclientebroker;
 
 import dominio.Comentario;
+import dominio.Hashtag;
 import dominio.Mensaje;
 import dominio.Operacion;
 import dominio.Publicacion;
@@ -13,6 +14,7 @@ import dominio.Solicitud;
 import dominio.Usuario;
 import excepciones.ErrorBusquedaPublicacionesException;
 import excepciones.ErrorBusquedaUsuarioException;
+import excepciones.ErrorConsultarPublicacionException;
 import excepciones.ErrorEditarComentarioException;
 import excepciones.ErrorEditarUsuarioException;
 import excepciones.ErrorEliminarComentarioException;
@@ -70,7 +72,7 @@ public class ProxyClienteBroker implements IProxy{
 //            this.enviarMensaje(username);
 //            this.escucharPorMensaje();
         } catch (IOException e){
-            closeEverything(socket, bufferedReader, bufferedWriter);
+            cerrarTodo(socket, bufferedReader, bufferedWriter);
         }
     }
     
@@ -91,7 +93,7 @@ public class ProxyClienteBroker implements IProxy{
             respuesta= bufferedReader.readLine();
             System.out.println(respuesta);
         } catch (IOException e){
-            closeEverything(socket, bufferedReader, bufferedWriter);
+            cerrarTodo(socket, bufferedReader, bufferedWriter);
         } finally{
             return respuesta;
         }
@@ -105,7 +107,7 @@ public class ProxyClienteBroker implements IProxy{
             bufferedWriter.flush();
             
         } catch (IOException e){
-            closeEverything(socket, bufferedReader, bufferedWriter);
+            cerrarTodo(socket, bufferedReader, bufferedWriter);
         }
     }
     
@@ -128,7 +130,7 @@ public class ProxyClienteBroker implements IProxy{
 //        }).start();
 //    }
     
-    public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){
+    public void cerrarTodo(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){
         try{
             if(bufferedReader != null){
                 bufferedReader.close();
@@ -171,12 +173,12 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Usuario registrarUsuario(Usuario usuario) {
-        String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
+        String usuarioSerializado= Deserealizador.getInstancia().serializarUsuario(usuario);
         Solicitud solicitud= new Solicitud(Operacion.registrar_usuario, usuarioSerializado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= Deserealizador.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -186,13 +188,13 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Usuario iniciarSesion(Usuario usuario) {
-        String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
+        String usuarioSerializado= Deserealizador.getInstancia().serializarUsuario(usuario);
         Solicitud solicitud= new Solicitud(Operacion.iniciar_sesion, usuarioSerializado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
         System.out.println(respuestaServidor);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= Deserealizador.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }
@@ -203,13 +205,13 @@ public class ProxyClienteBroker implements IProxy{
     
     @Override
     public Usuario iniciarSesionFacebook(Usuario usuario) {
-        String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
+        String usuarioSerializado= Deserealizador.getInstancia().serializarUsuario(usuario);
         Solicitud solicitud= new Solicitud(Operacion.iniciar_sesion_facebook, usuarioSerializado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
         System.out.println(respuestaServidor);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= Deserealizador.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }
@@ -220,12 +222,12 @@ public class ProxyClienteBroker implements IProxy{
   
     @Override
     public Publicacion registrarPublicacion(Publicacion publicacion) {
-        String publicacionSerealizada = Proxy.getInstancia().serializarSolicitudRegistroPublicacion(publicacion);
+        String publicacionSerealizada = Deserealizador.getInstancia().serializarPublicacion(publicacion);
         Solicitud solicitud = new Solicitud (Operacion.registrar_publicacion, publicacionSerealizada);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Publicacion respuesta= Proxy.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Publicacion respuesta= Deserealizador.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -247,10 +249,10 @@ public class ProxyClienteBroker implements IProxy{
     @Override
     public List<Publicacion> consultarPublicaciones() {
         Solicitud solicitud= new Solicitud(Operacion.consultar_publicaciones);
-        String solicitudSerealizada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerealizada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerealizada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        List<Publicacion> publicaciones= Proxy.getInstancia().deserealizarLista(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        List<Publicacion> publicaciones= Deserealizador.getInstancia().deserealizarLista(solicitudRespuesta.getRespuesta());
         if(publicaciones!=null){
             return publicaciones;
         } else{
@@ -270,12 +272,12 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Publicacion editarPublicacion(Publicacion publicacion) {
-        String publicacionSerealizada = Proxy.getInstancia().serializarSolicitudRegistroPublicacion(publicacion);
+        String publicacionSerealizada = Deserealizador.getInstancia().serializarPublicacion(publicacion);
         Solicitud solicitud = new Solicitud (Operacion.editar_publicacion, publicacionSerealizada);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Publicacion respuesta= Proxy.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Publicacion respuesta= Deserealizador.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -285,12 +287,12 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Publicacion eliminarPublicacion(Publicacion publicacion) {
-        String publicacionSerealizada = Proxy.getInstancia().serializarSolicitudRegistroPublicacion(publicacion);
+        String publicacionSerealizada = Deserealizador.getInstancia().serializarPublicacion(publicacion);
         Solicitud solicitud = new Solicitud (Operacion.eliminar_publicacion, publicacionSerealizada);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Publicacion respuesta= Proxy.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Publicacion respuesta= Deserealizador.getInstancia().deserealizarPublicacion(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -310,12 +312,12 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Comentario registrarComentario(Comentario comentario) {
-        String comentarioSerealizado = Proxy.getInstancia().serializarComentario(comentario);
+        String comentarioSerealizado = Deserealizador.getInstancia().serializarComentario(comentario);
         Solicitud solicitud = new Solicitud (Operacion.registrar_comentario, comentarioSerealizado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Comentario respuesta= Proxy.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Comentario respuesta= Deserealizador.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -325,12 +327,12 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Comentario editarComentario(Comentario comentario) {
-        String comentarioSerealizado = Proxy.getInstancia().serializarComentario(comentario);
+        String comentarioSerealizado = Deserealizador.getInstancia().serializarComentario(comentario);
         Solicitud solicitud = new Solicitud (Operacion.editar_comentario, comentarioSerealizado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Comentario respuesta= Proxy.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Comentario respuesta= Deserealizador.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -370,12 +372,12 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Comentario eliminarComentario(Comentario comentario) {
-        String comentarioSerealizado = Proxy.getInstancia().serializarComentario(comentario);
+        String comentarioSerealizado = Deserealizador.getInstancia().serializarComentario(comentario);
         Solicitud solicitud = new Solicitud (Operacion.eliminar_comentario, comentarioSerealizado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Comentario respuesta= Proxy.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Comentario respuesta= Deserealizador.getInstancia().deserealizarComentario(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -385,12 +387,12 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Usuario editarPerfilUsuario(Usuario usuario) {
-        String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
+        String usuarioSerializado= Deserealizador.getInstancia().serializarUsuario(usuario);
         Solicitud solicitud= new Solicitud(Operacion.editar_perfil, usuarioSerializado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= Deserealizador.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -400,12 +402,12 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Usuario consultarUsuarioNombre(Usuario usuario) {
-        String usuarioSerializado= Proxy.getInstancia().serializarUsuario(usuario);
+        String usuarioSerializado= Deserealizador.getInstancia().serializarUsuario(usuario);
         Solicitud solicitud= new Solicitud(Operacion.consultar_usuarioNombre, usuarioSerializado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Usuario respuesta= Proxy.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Usuario respuesta= Deserealizador.getInstancia().deserealizarUsuario(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
@@ -415,16 +417,31 @@ public class ProxyClienteBroker implements IProxy{
 
     @Override
     public Mensaje enviarMensaje(Mensaje mensaje) {
-        String mensajeSerializado= Proxy.getInstancia().serializarMensaje(mensaje);
+        String mensajeSerializado= Deserealizador.getInstancia().serializarMensaje(mensaje);
         Solicitud solicitud= new Solicitud(Operacion.registrar_mensaje, mensajeSerializado);
-        String solicitudSerializada= Proxy.getInstancia().serializarSolicitud(solicitud);
+        String solicitudSerializada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
         String respuestaServidor= this.enviarSolicitud(solicitudSerializada);
-        Solicitud solicitudRespuesta= Proxy.getInstancia().deserializarSolicitud(respuestaServidor);
-        Mensaje respuesta= Proxy.getInstancia().deserealizarMensaje(solicitudRespuesta.getRespuesta());
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        Mensaje respuesta= Deserealizador.getInstancia().deserealizarMensaje(solicitudRespuesta.getRespuesta());
         if(respuesta!=null){
             return respuesta;
         }else{
             throw new ErrorEnviarMensajeException(solicitudRespuesta.getRespuesta());
+        }
+    }
+
+    @Override
+    public List<Publicacion> consultarPublicaciones(Hashtag hashtag) {
+        String hashtagSerializado= Deserealizador.getInstancia().serializarHashtag(hashtag);
+        Solicitud solicitud= new Solicitud(Operacion.consultar_publicacionesHashtag, hashtagSerializado);
+        String solicitudSerealizada= Deserealizador.getInstancia().serializarSolicitud(solicitud);
+        String respuestaServidor= this.enviarSolicitud(solicitudSerealizada);
+        Solicitud solicitudRespuesta= Deserealizador.getInstancia().deserializarSolicitud(respuestaServidor);
+        List<Publicacion> publicaciones= Deserealizador.getInstancia().deserealizarLista(solicitudRespuesta.getRespuesta());
+        if(publicaciones!=null){
+            return publicaciones;
+        } else{
+            throw new ErrorConsultarPublicacionException(solicitudRespuesta.getRespuesta());
         }
     }
 
