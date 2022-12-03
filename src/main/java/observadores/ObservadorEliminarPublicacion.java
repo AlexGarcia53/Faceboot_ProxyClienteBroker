@@ -40,14 +40,14 @@ public class ObservadorEliminarPublicacion {
      * Método utilizado para registrar al observador al evento.
      * @param observadorEditarPublicacion Observador a reigstrar.
      */
-    public void suscribirse(IObservadorEliminarPublicacion observadorEditarPublicacion){
-        this.oyenteEliminarPublicacion= new OyenteEliminarPublicacion(observadorEditarPublicacion);
+    public void suscribirse(IObservadorEliminarPublicacion observador){
+        this.oyenteEliminarPublicacion= new OyenteEliminarPublicacion(observador);
     }
     /**
      * Método utilizado para eliminar al observador del evento.
      * @param observadorEditarPublicacion Observador a eliminar.
      */
-    public void desuscribirse(IObservadorEliminarPublicacion observadorEditarPublicacion){
+    public void desuscribirse(IObservadorEliminarPublicacion observador){
         this.oyenteEliminarPublicacion.eliminarObservador();
         this.oyenteEliminarPublicacion=null;
     }
